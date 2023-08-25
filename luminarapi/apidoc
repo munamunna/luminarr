@@ -1,0 +1,28 @@
+register
+==========
+localhost:8000/api/register/
+method:post
+data:username,email,password
+
+token
+=======
+url:localhost:8000/api/token/
+method:post
+data:username,password
+
+Courses list
+=================
+url:localhost:8000/api/courses
+method:get
+
+Demo list
+=================
+url:localhost:8000/api/democlass
+method:get
+
+course details
+==================
+
+localhost:8000/api/detail/{id}/
+method:get
+authentication:Token

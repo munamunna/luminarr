@@ -1,0 +1,31 @@
+name: Another CI CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    
+    steps:
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+      - name: Execute a script over EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            echo "Appleboi here" > x.txt
+            cd /home/ubuntu/luminar
+            sh deployments.sh
