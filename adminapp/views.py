@@ -9,6 +9,11 @@ from adminapp.serializers import CustomUserSerializer,StudentSerializer,WaitingL
 from rest_framework.mixins import ListModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin,CreateModelMixin
 # Create your views here.
 
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdminUser, IsStudentUser 
+
 class CustomAdminView(ModelViewSet):
     serializer_class = CustomUserSerializer
     queryset = CustomAdmin.objects.all()
@@ -81,7 +86,8 @@ class WaitingListView(GenericViewSet, ListModelMixin, RetrieveModelMixin, Destro
     serializer_class = WaitingListSerializer
     queryset = WaitingList.objects.all()
 
-
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])
 class BatchView(GenericViewSet, ListModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin, UpdateModelMixin):
     serializer_class = BatchSerializer
     queryset = Batch.objects.all()
