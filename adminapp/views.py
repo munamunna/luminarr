@@ -8,8 +8,11 @@ from .models import CustomAdmin,Student,WaitingList,Batch,AddStudent
 from adminapp.serializers import CustomUserSerializer,StudentSerializer,WaitingListSerializer,BatchSerializer,AddStudentSerializer
 from rest_framework.mixins import ListModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin,CreateModelMixin
 # Create your views here.
+from adminapp.serializers import CourseSerializer
+
 
 from rest_framework.authentication import TokenAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsAdminUser, IsStudentUser 
@@ -74,7 +77,7 @@ class StudentView(ModelViewSet):
                 "phone": user.phone,
                 "gender": user.gender,
                 "dob": user.dob,
-                "selected_course": user.selected_course,
+                "selected_course": CourseSerializer(user.selected_course).data,
                 "parent_no": user.parent_no
             },
             "totalResults": total_registered_users,
@@ -82,11 +85,20 @@ class StudentView(ModelViewSet):
         
         return Response(response_data, status=status.HTTP_201_CREATED)
 
+
+
+
 class WaitingListView(GenericViewSet, ListModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin):
     serializer_class = WaitingListSerializer
     queryset = WaitingList.objects.all()
 
-@authentication_classes([TokenAuthentication])
+
+
+
+
+
+
+@authentication_classes([JWTAuthentication])
 @permission_classes([IsAuthenticated, IsAdminUser])
 class BatchView(GenericViewSet, ListModelMixin, RetrieveModelMixin, CreateModelMixin, DestroyModelMixin, UpdateModelMixin):
     serializer_class = BatchSerializer

@@ -165,3 +165,12 @@ SWAGGER_SETTINGS = {
 }
 
 AUTH_USER_MODEL = 'adminapp.BaseUser'
+
+# Import necessary modules
+from datetime import timedelta
+
+# Configure SimpleJWT settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Set the expiration time as per your requirements
+    # Add other settings as needed
+}

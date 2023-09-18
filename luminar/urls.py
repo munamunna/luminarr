@@ -77,6 +77,7 @@ router.register('api/addedstudents',admin_view.AddedView,basename="addedstudents
 router.register("api/admin/logo",api_view.LogoViewSet,basename="logo"),
 router.register("api/admin/module",api_view.ModuleView,basename="module"),
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/auth/login/",ObtainAuthToken.as_view()),

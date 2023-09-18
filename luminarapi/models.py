@@ -2,11 +2,11 @@ from django.db import models
 
 class Course(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     duration=models.CharField(max_length=300,default="6 months")
     offline_fees = models.DecimalField(max_digits=10, decimal_places=2)
     online_fees = models.DecimalField(max_digits=10, decimal_places=2)
-    thumbnail = models.ImageField(upload_to='thumbnails')
+    thumbnail = models.ImageField(upload_to='thumbnails',blank=True)
     full_name=models.CharField(max_length=100,default=False) 
     cochin=models.CharField(max_length=100,default=False)
     calicut=models.CharField(max_length=100,default=False)

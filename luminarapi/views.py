@@ -7,11 +7,13 @@ from django.shortcuts import render,redirect
 from rest_framework.viewsets import ModelViewSet,GenericViewSet
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.mixins import ListModelMixin,RetrieveModelMixin,CreateModelMixin,UpdateModelMixin
+from rest_framework.mixins import ListModelMixin,RetrieveModelMixin,CreateModelMixin,UpdateModelMixin,DestroyModelMixin
 from rest_framework import authentication,permissions
 # from django.contrib.auth import get_user_model
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+
+
 from luminarapi.serializers import DemoSerializers,DetailsSerializer,BatchSerializer,OverviewSerializer,AttendanceSerializer,AssignmentSerializer,AnnouncementSerializer,LiveClassSerializer,VideoScreenSerializer
 from luminarapi.models import DemoClass,Batch,Overview,Attendance,Assignment,Announcement,LiveClass,VideoScreen,Course
 from luminarapi.serializers import TestSerializer,JobPortalSerializer,VideoScreenClassSerializer,LogoSerializer,ModuleSerializer
@@ -209,6 +211,34 @@ class DetailsListAPIView(GenericViewSet):
 
         return Response(response_data)
     
+
+    
+    # Your list method remains the same
+    def list(self, request, *args, **kwargs):
+        try:
+            details = self.get_queryset()
+            total_results = details.count()
+            if total_results == 0:
+                response_data = {
+                    "status": "ok",
+                    "message": [],
+                    "totalResults": total_results
+                }
+            else:
+                serialized_details = self.serializer_class(details, many=True)
+                response_data = {
+                    "status": "ok",
+                    "data": serialized_details.data,
+                    "totalResults": total_results
+                }
+        except Exception as e:
+            response_data = {
+                "status": "error",
+                "error_message": str(e),
+                "totalResults": 0  # Reset totalResults on error
+            }
+
+        return Response(response_data)
 
     
 class BatchListView(GenericViewSet):
@@ -993,4 +1023,5 @@ class ModuleView(GenericViewSet):
 
         return Response(response_data)
     
-  
+
+    

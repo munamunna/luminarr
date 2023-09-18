@@ -83,6 +83,7 @@ class LogoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Logo
         fields = '__all__'
+
 class LiveClassSerializer(serializers.ModelSerializer):
     logo=LogoSerializer()
     id=serializers.CharField(read_only=True)
